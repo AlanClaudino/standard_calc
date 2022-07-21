@@ -1,0 +1,127 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fafafa;
+  font-family: 'Lato', sans-serif;
+  display: grid;
+  height: 100vh;
+  grid-template-areas: 
+    "h h h h h h h h h h"
+    "s m m m m m m m m b"
+    "s m m m m m m m m b"
+    "s m m m m m m m m b"
+    "s m m m m m m m m b"
+    "s m m m m m m m m b"
+    "s m m m m m m m m b"
+    "s m m m m m m m m b"
+    "s m m m m m m m m b"
+    "f f f f f f f f f f";
+}
+
+/* Header */
+#main-header {
+  grid-area: h;
+  min-height: 50px;
+}
+
+#main-header {
+  background-color: #7C898B;
+  color: #fafafa;
+  min-height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+
+#main-header h1 {
+  font-size: 1.5em;
+}
+
+/* Main Content */
+
+#main-content {
+  grid-area: m;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#calculator {
+  padding: 1em;
+  margin: 1em auto;
+  max-width: 400px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: #7C898B;
+  box-shadow: 0px 1px 4px 2px  #545C5280;
+}
+
+/* Display */
+
+#display-section .container{
+  min-height: 50px;
+  border-radius: 10px;
+  background-color: #FBF9FF;
+  color: #7C898B;
+  margin-bottom: 1.5em;
+}
+
+#display {
+  text-align: right;
+  padding: 1em;
+  font-size: larger;
+  font-weight: 700;
+}
+
+/* key board */
+
+#keyboard .container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  color: #7C898B;
+  gap: 2px;
+  border-radius: 10px;
+}
+
+.keys:nth-child(16) {
+  grid-row: 4/6;
+  grid-column: 4/5;
+}
+
+.keys {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em 0.8em;
+  background-color: #FBF9FF;
+  font-size: large;
+  font-weight: 700;
+}
+
+
+/* Footer */
+
+#main-footer { 
+  grid-area: f;
+}
+
+footer {
+  color: #7C898B;
+  border-top: #7C898B 2px solid;
+  min-height: 50px;
+  max-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer p {
+  font-size: small;
+  padding: 0.5em 0;
+  text-align: center;
+}
