@@ -1,46 +1,153 @@
 // Variables //
 
-let calculator  = document.getElementById('calculator');
-let display = document.getElementById('display');
-let keyboard = document.getElementById('keyboard');
-let keys = document.getElementsByClassName('keys');
+let firstOperandDisplay = document.querySelector('.first-operand');
+let secondOperandDisplay = document.querySelector('.second-operand');
+let numberKeys = document.querySelectorAll('.number-keys');
+let operationKeys = document.querySelectorAll('.operation-keys');
+let clearEntryKey = document.querySelector('.clear-entry-key')
+let clearKey = document.querySelector('.clear-key')
+let backspaceKey = document.querySelector('.backspace-key')
+let equalsKey = document.querySelector('.equals-key')
 
-
-let num = '';
-let num1 = '';
-let num2 = '';
-let operator = '';
+let firstOperand = '';
+let secondOperand = '';
+let operation = '';
 let result = '';
+
+// Functions //
+
+function addNumber(num) {
+  if (result != '') {
+    result = '';
+    firstOperand = num;    
+  }
+  else if(num === '.' && firstOperand.includes('.')){
+    return
+  } 
+  else if (firstOperandDisplay.innerText === '0') {
+    firstOperand = num.toString();
+  } 
+  else {
+    firstOperand += num.toString();
+  }
+}
+
+function addOperation (op) {
+  if (secondOperand === '') {
+    secondOperand = firstOperand;
+    operation = op;
+    firstOperand = '';
+  } 
+  else {
+    compute (operation, secondOperand, firstOperand)
+    secondOperand = result;
+    firstOperand = '';
+    operation = op;
+    result = '';
+  }
+
+}
+
+function equalsOperation() {
+  if (firstOperand === '' || secondOperand === '' || operation === '') {
+    return
+  }
+  else {
+    compute(operation, secondOperand, firstOperand);
+    firstOperand = result;
+    secondOperand = '';
+    operation = '';
+  }
+}
+
+function compute (op, factor1, factor2) {
+  switch (op) {
+    case '+':
+      result = String(parseFloat(factor1) + parseFloat(factor2));
+      if (result === 'NaN') { result = 'Error' }
+      break;
+    case '-':
+      result = String(parseFloat(factor1) - parseFloat(factor2));
+      if (result === 'NaN') { result = 'Error' }
+      break;
+    case 'x':
+      result = String(parseFloat(factor1) * parseFloat(factor2));
+      if (result === 'NaN') { result = 'Error' }
+      break;
+    case '÷':
+      result = String(parseFloat(factor1) / parseFloat(factor2));
+      if (result === 'NaN') { result = 'Error' }
+      break;
+    default:
+      result = 'Error'
+  }
+}
+
+function clearOperation() {
+  firstOperand = '';
+  secondOperand = '';
+  operation = '';
+}
+
+function clearEntryOperation() {
+  firstOperand = '';
+}
+
+function backspaceOperation() {
+  firstOperand = firstOperand.substring(0, firstOperand.length - 1);
+}
+
+function updatedDisplay () {
+  firstOperandDisplay.innerText = firstOperand;
+  secondOperandDisplay.innerText = `${secondOperand} ${operation}`;
+};
+
 
 // Events //
 
-document.addEventListener('keydown', runEventKeyb);
 
-keys[0].addEventListener('click', runEvent);
-keys[1].addEventListener('click', runEvent);
-keys[2].addEventListener('click', runEvent);
-keys[3].addEventListener('click', runEvent);
-keys[4].addEventListener('click', runEvent);
-keys[5].addEventListener('click', runEvent);
-keys[6].addEventListener('click', runEvent);
-keys[7].addEventListener('click', runEvent);
-keys[8].addEventListener('click', runEvent);
-keys[9].addEventListener('click', runEvent);
-keys[10].addEventListener('click', runEvent);
-keys[11].addEventListener('click', runEvent);
-keys[12].addEventListener('click', runEvent);
-keys[13].addEventListener('click', runEvent);
-keys[14].addEventListener('click', runEvent);
-keys[15].addEventListener('click', runEvent);
-keys[16].addEventListener('click', runEvent);
-keys[17].addEventListener('click', runEvent);
-keys[18].addEventListener('click', runEvent);
+numberKeys.forEach(key => {
+  key.addEventListener('click', () => {
+    addNumber (key.innerText);
+    updatedDisplay ();
+  });
+});
 
+operationKeys.forEach(key => {
+  key.addEventListener('click', () => {
+    if (key.innerText === '-' && firstOperand === '') {
+      addNumber(key.innerText);
+      updatedDisplay ();
+    } 
+    else {
+      addOperation(key.innerText);
+      updatedDisplay ();
+    }
+    
+  })
+});
 
-// Functions
+equalsKey.addEventListener('click', () => {
+  equalsOperation();
+  updatedDisplay();
+})
 
-function runEventKeyb (e) {
+clearKey.addEventListener('click', () => {
+  clearOperation();
+  updatedDisplay();
+})
 
+clearEntryKey.addEventListener('click', () => {
+  clearEntryOperation();
+  updatedDisplay();
+})
+
+backspaceKey.addEventListener('click', () => {
+  backspaceOperation();
+  updatedDisplay();
+})
+
+document.addEventListener('keydown', (e) => {
   // n# cases //
   if (e.key === '0' ||
       e.key === '1' ||
@@ -51,200 +158,50 @@ function runEventKeyb (e) {
       e.key === '6' ||
       e.key === '7' ||
       e.key === '8' ||
-      e.key === '9' ) {
-        if (display.innerText === '0') {
-          num = e.key;
-          display.innerText = num;
-        } else {
-          num += e.key;
-          display.innerText = num;
-        }
-      }
-  
-  // '.' case //
-  else if (e.key === '.') {
-    if (display.innerText === '0') {
-      num = '0';
-      num += e.key;
-      display.innerText = num;
-    } else {
-      num += e.key;
-      display.innerText = num;
-  }
+      e.key === '9' ||
+      e.key === '.' ) {
+    addNumber (e.key);
+    updatedDisplay ();
   }
 
-  // Operator cases //
-  else if(e.key === '+' ||
-          e.key === '-' ||
-          e.key === '/' ||
-          e.key === '*') {
-    if(num1 === '') {
-      num1 = num;
-      operator = e.key;
-      num = '';
-      display.innerText = operator;
+  // Operation cases //
+  else if(e.key === '+' ) {
+    addOperation(e.key);
+    updatedDisplay ();
+  }
+
+  else if(e.key === '-' ) {
+    if (firstOperand === '') {
+      addNumber (e.key);
+      updatedDisplay ();
     } 
     else {
-      num2 = num;
-      calc(operator, num1, num2);
-      display.innerText = result;
-      num1 = result;
-      operator = e.key;
-      num = '';
-      num2 = '';
+      addOperation(e.key);
+      updatedDisplay ();
     }
   }
 
-  //Equal case //
+  else if (e.key === '/') {
+    let oper = '÷';
+    addOperation(oper);
+    updatedDisplay ();
+  }
+
+  else if(e.key === '*'){
+    let oper = 'x';
+    addOperation(oper);
+    updatedDisplay ();
+  }
+
+  //Equals case //
   else if(e.key === 'Enter') {
-    num2 = num;
-    calc(operator, num1, num2);
-    display.innerText = result;
-    num = result;
-    num1 = '';
-    num2 = '';
+    equalsOperation();
+    updatedDisplay();
   }
 
   // Backspace case //
   else if(e.key === 'Backspace') {
-    if (display.innerText.length <= 1) {
-      display.innerText = '0';
-    } else {
-      num = num.substring(0, num.length - 1);
-      display.innerText = num
-    }
+    backspaceOperation();
+    updatedDisplay();
   }
-
-}
-
-function runEvent (e) {
-  // n# cases //
-  if (e.srcElement.innerText === '0' ||
-      e.srcElement.innerText === '1' ||
-      e.srcElement.innerText === '2' ||
-      e.srcElement.innerText === '3' ||
-      e.srcElement.innerText === '4' ||
-      e.srcElement.innerText === '5' ||
-      e.srcElement.innerText === '6' ||
-      e.srcElement.innerText === '7' ||
-      e.srcElement.innerText === '8' ||
-      e.srcElement.innerText === '9' ) {
-        if (display.innerText === '0') {
-          num = e.srcElement.innerText
-          display.innerText = num
-        } else {
-          num += e.srcElement.innerText
-          display.innerText = num
-        }
-      }
-  
-  // '.' case //
-  else if (e.srcElement.innerText === '.') {
-    if (display.innerText === '0') {
-      num = '0';
-      num += e.srcElement.innerText
-      display.innerText = num
-    } 
-    else if(display.innerText.includes('.')){
-      display.innerText = num;
-    }
-    else {
-      num += e.srcElement.innerText
-      display.innerText = num
-    }
-  }
-
-  // Operator cases //
-  else if(e.srcElement.innerText === '+' ||
-          e.srcElement.innerText === '-' ||
-          e.srcElement.innerText === '÷' ||
-          e.srcElement.innerText === 'x') {
-    if(num1 === '') {
-      num1 = num;
-      operator = e.srcElement.innerText;
-      num = '';
-      display.innerText = operator;
-    } 
-    else {
-      num2 = num;
-      calc(operator, num1, num2);
-      display.innerText = result;
-      num1 = result;
-      operator = e.srcElement.innerText;
-      num = '';
-      num2 = '';
-    }
-  }
-
-  //Equal case //
-  else if(e.srcElement.innerText === '=') {
-    num2 = num;
-    calc(operator, num1, num2);
-    display.innerText = result;
-    num = result;
-    num1 = '';
-    num2 = '';
-    operator = '';
-  }
-
-   // Backspace case //
-  else if(e.srcElement.innerText === "⌫") {
-    if (display.innerText.length <= 1) {
-      display.innerText = '0';
-    } else {
-      num = num.substring(0, num.length - 1);
-      display.innerText = num
-    }
-  }
-
-  // CE case //
-  else if(e.srcElement.innerText === "CE") {
-   num = ''
-   display.innerText = '0';
-  }
-
-  // C case //
-  else if(e.srcElement.innerText === 'C') {
-    num = '';
-    num1 = '';
-    num2 = '';
-    operator = '';
-    display.innerText = '0';
-  }
-
-
-
-}
-
-// Math Function //
-
-function calc(op, factor1, factor2 ){
-  switch (op) {
-    case '+':
-      result = String(parseFloat(factor1) + parseFloat(factor2));
-      if (result === 'NaN') { result = '0' }
-      break;
-    case '-':
-      result = String(parseFloat(factor1) - parseFloat(factor2));
-      if (result === 'NaN') { result = '0' }
-      break;
-    case 'x':
-      result = String(parseFloat(factor1) * parseFloat(factor2));
-      if (result === 'NaN') { result = '0' }
-      break;
-    case '÷':
-      result = String(parseFloat(factor1) / parseFloat(factor2));
-      if (result === 'NaN') { result = '0' }
-      break;
-    case '/':
-      result = String(parseFloat(factor1) / parseFloat(factor2));
-      if (result === 'NaN') { result = '0' }
-      break;
-    case '*':
-      result = String(parseFloat(factor1) * parseFloat(factor2));
-      if (result === 'NaN') { result = '0' }
-      break;
-    default:
-      result = '0'
-  }
-}
+});

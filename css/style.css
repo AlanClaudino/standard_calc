@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: #fafafa;
+  background-color: #eff2f1;
   font-family: 'Lato', sans-serif;
   display: grid;
   height: 100vh;
@@ -29,17 +29,16 @@ body {
 }
 
 #main-header {
-  background-color: #7C898B;
-  color: #fafafa;
-  min-height: fit-content;
+  background-color: #22577a;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1em;
 }
 
 #main-header h1 {
   font-size: 1.5em;
+  padding: 0.2em;
 }
 
 /* Main Content */
@@ -57,25 +56,37 @@ body {
   max-width: 400px;
   width: 100%;
   border-radius: 10px;
-  background-color: #7C898B;
+  background-color: #38a3a5;
   box-shadow: 0px 1px 4px 2px  #545C5280;
 }
 
 /* Display */
 
 #display-section .container{
-  min-height: 50px;
+  min-height: 90px;
   border-radius: 10px;
-  background-color: #FBF9FF;
-  color: #7C898B;
+  background-color: #fff;
   margin-bottom: 1.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding: 10px;
 }
 
-#display {
+.second-operand {
   text-align: right;
-  padding: 1em;
-  font-size: larger;
+  font-size: 1.5rem;
   font-weight: 700;
+  color: rgba(34, 87, 122, 0.8);
+  min-height: 1.5rem;
+}
+.first-operand {
+  text-align: right;
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(34, 87, 122);
+  min-height: 2rem;
 }
 
 /* key board */
@@ -83,7 +94,7 @@ body {
 #keyboard .container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  color: #7C898B;
+  color: #22577a;
   gap: 2px;
   border-radius: 10px;
 }
@@ -103,6 +114,12 @@ body {
   font-weight: 700;
 }
 
+.keys:hover {
+  cursor: pointer;
+  background-color: rgba(251, 249, 255, 0.4);
+  color: #fff;
+}
+
 
 /* Footer */
 
@@ -111,8 +128,8 @@ body {
 }
 
 footer {
-  color: #7C898B;
-  border-top: #7C898B 2px solid;
+  color: #22577a;
+  border-top: #22577a 2px solid;
   min-height: 50px;
   max-height: 50px;
   display: flex;
