@@ -72,6 +72,8 @@ body {
   justify-content: space-around;
   align-items: flex-end;
   padding: 10px;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .second-operand {

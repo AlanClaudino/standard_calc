@@ -33,12 +33,16 @@ function addNumber(num) {
 }
 
 function addOperation (op) {
+  if (firstOperand === '' && secondOperand === '') {
+    return
+  }
   if (secondOperand === '') {
     secondOperand = firstOperand;
     operation = op;
     firstOperand = '';
-  } 
-  else {
+  } else if (firstOperand === '' && operation != '') {
+    operation = op;
+  } else {
     compute (operation, secondOperand, firstOperand)
     secondOperand = result;
     firstOperand = '';
@@ -61,6 +65,9 @@ function equalsOperation() {
 }
 
 function compute (op, factor1, factor2) {
+  if (factor2 === '-') {
+    return;
+  }
   switch (op) {
     case '+':
       result = String(parseFloat(factor1) + parseFloat(factor2));
@@ -115,14 +122,17 @@ numberKeys.forEach(key => {
 
 operationKeys.forEach(key => {
   key.addEventListener('click', () => {
-    if (key.innerText === '-' && firstOperand === '') {
-      addNumber(key.innerText);
-      updatedDisplay ();
-    } 
-    else {
-      addOperation(key.innerText);
-      updatedDisplay ();
-    }
+    // if (key.innerText === '-' && firstOperand === '') {
+    //   addNumber(key.innerText);
+    //   updatedDisplay ();
+    // } 
+    // else {
+    //   addOperation(key.innerText);
+    //   updatedDisplay ();
+    // }
+
+    addOperation(key.innerText);
+    updatedDisplay ();
     
   })
 });
@@ -171,14 +181,17 @@ document.addEventListener('keydown', (e) => {
   }
 
   else if(e.key === '-' ) {
-    if (firstOperand === '') {
-      addNumber (e.key);
-      updatedDisplay ();
-    } 
-    else {
-      addOperation(e.key);
-      updatedDisplay ();
-    }
+    // if (firstOperand === '') {
+    //   addNumber (e.key);
+    //   updatedDisplay ();
+    // } 
+    // else {
+    //   addOperation(e.key);
+    //   updatedDisplay ();
+    // }
+
+    addOperation(e.key);
+    updatedDisplay ();
   }
 
   else if (e.key === '/') {
